@@ -12,6 +12,6 @@ void main() {
     vec4 lightVector = normalize(u_LightPos - v_Position);
     float incidence = max(dot(v_Normal, lightVector), 0.1);
     incidence = incidence / (1.0 + (0.001 * distance * distance));
-//    float diffuse = (2.0 * incidence);
-    gl_FragColor = u_LightColor * incidence;
+    float diffuse = incidence + 0.1;
+    gl_FragColor = u_LightColor * diffuse;
 }
