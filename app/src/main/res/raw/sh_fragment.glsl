@@ -1,17 +1,19 @@
+//#extension GL_OES_standard_derivatives : enable
+
 precision mediump float;
 
-uniform vec4 u_LightPos;
-uniform vec4 u_LightColor;
-//uniform float u_LightIntensity;
-
-varying vec4 v_Position;
-varying vec4 v_Normal;
+//varying vec4 v_Position;
 
 void main() {
-    float distance = length(u_LightPos - v_Position);
-    vec4 lightVector = normalize(u_LightPos - v_Position);
-    float incidence = max(dot(v_Normal, lightVector), 0.1);
-    incidence = incidence / (1.0 + (0.001 * distance * distance));
-    float diffuse = incidence + 0.1;
-    gl_FragColor = u_LightColor * diffuse;
+//    vec3 lightPos = vec3(0.0, 6.0, -4.0);
+//    vec4 lightColor = vec4(1.0, 1.0, 0.8, 1.0);
+//    vec3 dX = dFdx(v_Position.xyz);
+//    vec3 dY = dFdy(v_Position.xyz);
+//    vec3 normal = normalize(cross(dY, dX));
+//
+//    vec3 lightVector = normalize(v_Position.xyz - lightPos);
+//    float lambert = dot(normal, lightVector);
+//
+//    gl_FragColor = lightColor * (1.8 + lambert);
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }

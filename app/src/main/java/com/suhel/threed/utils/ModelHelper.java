@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.RawRes;
 import android.util.SparseArray;
 
-import com.suhel.threed.gl.base.Model;
+import com.suhel.threed.gfx.BetterModel;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,14 +13,14 @@ import java.util.List;
 
 public class ModelHelper {
 
-    private static final SparseArray<Model> resMap = new SparseArray<>();
+    private static final SparseArray<BetterModel> resMap = new SparseArray<>();
 
-    public static Model fromFile(Context context, @RawRes int resource) {
+    public static BetterModel fromFile(Context context, @RawRes int resource) {
         try {
             if (resMap.get(resource) != null)
                 return resMap.get(resource);
 
-            Model temp = _fromFile(context, resource);
+            BetterModel temp = _fromFile(context, resource);
             if (temp != null)
                 resMap.put(resource, temp);
             return temp;
@@ -30,7 +30,7 @@ public class ModelHelper {
         return null;
     }
 
-    private static Model _fromFile(Context context, @RawRes int resource) throws Exception {
+    private static BetterModel _fromFile(Context context, @RawRes int resource) throws Exception {
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(context.getResources().openRawResource(resource)));
 
@@ -84,7 +84,7 @@ public class ModelHelper {
                 indices[(i * indexStride) + j] = (short) (Short.parseShort(values[j]) - 1);
         }
 
-        return new Model(vertices, normals, indices, vertexStride, normalStride, indexStride);
+        return new BetterModel(vertices, indices, vertexStride);
     }
 
 }

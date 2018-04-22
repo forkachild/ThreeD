@@ -1,14 +1,14 @@
-package com.suhel.threed.custom.view;
+package com.suhel.threed.custom;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 
-import com.suhel.threed.custom.engine.DefaultEngine;
+import com.suhel.threed.custom.DefaultRenderer;
 
 public class GameScreen extends GLSurfaceView {
 
-    private DefaultEngine engine;
+    private DefaultRenderer engine;
 
     public GameScreen(Context context) {
         this(context, null);
@@ -17,7 +17,7 @@ public class GameScreen extends GLSurfaceView {
     public GameScreen(Context context, AttributeSet attrs) {
         super(context, attrs);
         setEGLContextClientVersion(2);
-        engine = new DefaultEngine(context);
+        engine = new DefaultRenderer(context);
         setRenderer(engine);
     }
 
