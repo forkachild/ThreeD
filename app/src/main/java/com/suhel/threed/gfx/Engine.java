@@ -18,7 +18,7 @@ import com.suhel.threed.utils.ShaderHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BetterEngine implements IPrepareable, IRenderable {
+public class Engine implements IPrepareable, IRenderable {
 
     private Context context;
     private Projection projection;
@@ -29,7 +29,7 @@ public class BetterEngine implements IPrepareable, IRenderable {
     private SparseIntArray shaderPrograms = new SparseIntArray();
     private int currentProgram = 0;
 
-    public BetterEngine(Context context) {
+    public Engine(Context context) {
         this.context = context;
     }
 

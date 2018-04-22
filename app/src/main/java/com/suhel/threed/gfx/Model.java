@@ -13,7 +13,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-public class BetterModel implements IPluggable, IShaded {
+public class Model implements IPluggable, IShaded {
 
     private float[] vertices;
     private short[] indices;
@@ -26,7 +26,7 @@ public class BetterModel implements IPluggable, IShaded {
     private int program;
     private int positionAttribHandle, modelMatrixHandle;
 
-    public BetterModel(float[] vertices, short[] indices, int vertexStride) {
+    public Model(float[] vertices, short[] indices, int vertexStride) {
         this.vertices = vertices;
         this.indices = indices;
         this.vertexStride = vertexStride;

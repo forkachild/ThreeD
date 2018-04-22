@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
 import com.suhel.threed.R;
-import com.suhel.threed.gfx.BetterEngine;
+import com.suhel.threed.gfx.Engine;
 import com.suhel.threed.gfx.Eye;
 import com.suhel.threed.gfx.Perspective;
 import com.suhel.threed.utils.ModelHelper;
@@ -16,11 +16,11 @@ import javax.microedition.khronos.opengles.GL10;
 public class DefaultRenderer implements GLSurfaceView.Renderer {
 
     private Context context;
-    private BetterEngine engine;
+    private Engine engine;
 
     public DefaultRenderer(Context context) {
         this.context = context;
-        engine = new BetterEngine(context);
+        engine = new Engine(context);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         engine.addPlugin(new Eye(0f, 0f, -6f, 0f, 0f, 0f));
 //        engine.addPlugin(OBJReader.fromFile(context, R.raw.arrow));
         engine.addPlugin(ModelHelper.fromFile(context, R.raw.goru));
-        engine.assignProgramToSlot(0, BetterEngine.Program.fromRes(R.raw.sh_vertex, R.raw.sh_fragment));
+        engine.assignProgramToSlot(0, Engine.Program.fromRes(R.raw.sh_vertex, R.raw.sh_fragment));
         engine.prepare();
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }

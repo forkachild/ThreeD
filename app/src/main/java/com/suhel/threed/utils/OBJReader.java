@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.RawRes;
 import android.util.SparseArray;
 
-import com.suhel.threed.gfx.BetterModel;
+import com.suhel.threed.gfx.Model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public abstract class OBJReader {
 
-    private static SparseArray<BetterModel> models = new SparseArray<>();
+    private static SparseArray<Model> models = new SparseArray<>();
 
-    public static BetterModel fromFile(Context context, @RawRes int resource) {
+    public static Model fromFile(Context context, @RawRes int resource) {
         try {
-            BetterModel temp = models.get(resource);
+            Model temp = models.get(resource);
 
             if (temp == null) {
                 temp = _fromFile(context, resource);
@@ -32,7 +32,7 @@ public abstract class OBJReader {
         return null;
     }
 
-    private static BetterModel _fromFile(Context context, @RawRes int resource) throws IOException {
+    private static Model _fromFile(Context context, @RawRes int resource) throws IOException {
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(context.getResources().openRawResource(resource)));
 
@@ -96,7 +96,7 @@ public abstract class OBJReader {
 
             }
         }
-        return new BetterModel(vertices, indices, 4);
+        return new Model(vertices, indices, 4);
     }
 
 }
