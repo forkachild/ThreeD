@@ -1,8 +1,8 @@
-package com.suhel.threed.gfx.objects.viewport;
+package com.suhel.threed.gfx.objects.transformer;
 
 import com.suhel.threed.gfx.types.basic.Mat4;
 
-public abstract class ViewPort implements IViewPort {
+public abstract class Transformer implements ITransformer {
 
     private Mat4 matrix = new Mat4();
 

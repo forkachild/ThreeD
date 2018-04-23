@@ -48,7 +48,7 @@ public class Light implements IPluggable, IShaded {
     }
 
     @Override
-    public void render() {
+    public void render(int program) {
         lightColorHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_COLOR0);
         GLES20.glUniformMatrix4fv(lightColorHandle, 1, false, color, 0);
         lightPositionHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_POSITION0);

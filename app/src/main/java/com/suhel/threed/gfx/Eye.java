@@ -21,7 +21,7 @@ public class Eye extends View {
     }
 
     @Override
-    public void render() {
+    public void render(int program) {
         Matrix.rotateM(matrix, 0, 1.0f, 0, 1, 0);
         viewMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
         GLES20.glUniformMatrix4fv(viewMatrixHandle, 1, false, matrix, 0);

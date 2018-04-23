@@ -56,7 +56,7 @@ public class Model implements IPluggable, IShaded {
     }
 
     @Override
-    public void render() {
+    public void render(int program) {
 
         positionAttribHandle = GLES20.glGetAttribLocation(program, ShaderSpecs.ATTR_POSITION);
         GLES20.glEnableVertexAttribArray(positionAttribHandle);

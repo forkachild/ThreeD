@@ -14,6 +14,8 @@ public interface ShaderSpecs {
     String UNI_VIEW_MATRIX = "u_ViewMatrix";
     String UNI_PROJECTION_MATRIX = "u_ProjectionMatrix";
 
+    String UNI_EYE_POSITION = "u_EyePosition";
+
     String UNI_LIGHT_POSITION0 = "u_LightPos0";
     String UNI_LIGHT_POSITION1 = "u_LightPos1";
     String UNI_LIGHT_POSITION2 = "u_LightPos2";

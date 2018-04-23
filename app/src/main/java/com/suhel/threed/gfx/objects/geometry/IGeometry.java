@@ -9,6 +9,10 @@ import java.nio.ShortBuffer;
 
 interface IGeometry extends IPrepareable, IShadeable, IRenderable {
 
+    int getVertexCount();
+
+    int getIndexCount();
+
     FloatBuffer getVertexBuffer();
 
     ShortBuffer getIndexBuffer();

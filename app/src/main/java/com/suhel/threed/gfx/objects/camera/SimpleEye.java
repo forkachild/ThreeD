@@ -1,13 +1,17 @@
 package com.suhel.threed.gfx.objects.camera;
 
+import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
+import com.suhel.threed.gfx.types.ShaderSpecs;
 import com.suhel.threed.gfx.types.basic.Vec3;
 
 public class SimpleEye extends Camera {
 
     protected Vec3 up;
+
+    private int viewMatrixHandle;
 
     public SimpleEye() {
         super();
@@ -57,6 +61,17 @@ public class SimpleEye extends Camera {
                 getEye().getX(), getEye().getY(), getEye().getZ(),
                 getLookAt().getX(), getLookAt().getY(), getLookAt().getZ(),
                 up.getX(), up.getY(), up.getZ());
+    }
+
+    @Override
+    public void prepareWithProgram(int program) {
+        viewMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
+    }
+
+    @Override
+    public void render(int program) {
+        GLES20.glUniformMatrix4fv(viewMatrixHandle, 1,
+                false, getMatrix().data, 0);
     }
 
 }

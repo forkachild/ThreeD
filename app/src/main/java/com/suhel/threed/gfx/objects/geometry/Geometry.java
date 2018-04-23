@@ -18,10 +18,20 @@ public abstract class Geometry implements IGeometry {
     private FloatBuffer vertexBuffer;
     private ShortBuffer indexBuffer;
 
-    public Geometry(@NonNull float[] vertices, @NonNull short[] indices, int vertexStride) {
+    public Geometry(@NonNull float[] vertices, int vertexStride, @NonNull short[] indices) {
         this.vertices = vertices;
-        this.indices = indices;
         this.vertexStride = vertexStride;
+        this.indices = indices;
+    }
+
+    @Override
+    public int getVertexCount() {
+        return vertices.length;
+    }
+
+    @Override
+    public int getIndexCount() {
+        return indices.length;
     }
 
     @Override
@@ -53,7 +63,5 @@ public abstract class Geometry implements IGeometry {
         indexBuffer.put(indices);
         indexBuffer.position(0);
     }
-
-
 
 }

@@ -6,25 +6,24 @@ import android.support.annotation.RawRes;
 import android.util.Log;
 import android.util.SparseIntArray;
 
-import com.suhel.threed.gfx.types.Projection;
-import com.suhel.threed.gfx.types.View;
-import com.suhel.threed.gfx.types.interfaces.IPluggable;
+import com.suhel.threed.gfx.objects.camera.Camera;
+import com.suhel.threed.gfx.objects.geometry.Geometry;
+import com.suhel.threed.gfx.objects.light.Light;
+import com.suhel.threed.gfx.objects.transformer.Transformer;
+import com.suhel.threed.gfx.objects.viewport.ViewPort;
 import com.suhel.threed.gfx.types.interfaces.IPrepareable;
-import com.suhel.threed.gfx.types.interfaces.IRenderable;
-import com.suhel.threed.gfx.types.interfaces.IShaded;
 import com.suhel.threed.utils.ResourcesHelper;
 import com.suhel.threed.utils.ShaderHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Engine implements IPrepareable, IRenderable {
+public class Engine implements IPrepareable {
 
     private Context context;
-    private Projection projection;
-    private View view;
-    private List<IPluggable> geometries = new ArrayList<>();
-    private List<IShaded> shadeds = new ArrayList<>();
+
+    private Camera camera;
+    private Geometry geometry;
+    private Light light;
+    private Transformer transformer;
+    private ViewPort viewPort;
 
     private SparseIntArray shaderPrograms = new SparseIntArray();
     private int currentProgram = 0;
@@ -33,83 +32,86 @@ public class Engine implements IPrepareable, IRenderable {
         this.context = context;
     }
 
-    public void addPlugin(IPluggable pluggable) {
-        switch (pluggable.getPluginType()) {
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
 
-            case VIEW:
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
 
-                view = (View) pluggable;
-                break;
+    public void setLight(Light light) {
+        this.light = light;
+    }
 
-            case PROJECTION:
+    public void setTransformer(Transformer transformer) {
+        this.transformer = transformer;
+    }
 
-                projection = (Projection) pluggable;
-                break;
-
-            case GEOMETRY:
-
-                geometries.add(pluggable);
-                break;
-
-        }
-        if (pluggable instanceof IShaded) {
-            shadeds.add((IShaded) pluggable);
-        }
+    public void setViewPort(ViewPort viewPort) {
+        this.viewPort = viewPort;
     }
 
     public void assignProgramToSlot(int slot, Program program) {
         program.compile(context);
         this.currentProgram = program.getProgram();
         shaderPrograms.put(slot, this.currentProgram);
-        updateShader();
+        prepare();
     }
 
     public void setCurrentSlot(int slot) {
         if (shaderPrograms.get(slot) != 0) {
             this.currentProgram = shaderPrograms.get(slot);
-            updateShader();
+            prepare();
         }
-    }
-
-    private void updateShader() {
-        for (IShaded shaded : shadeds) {
-            shaded.setShaderProgram(currentProgram);
-        }
-    }
-
-    public void setResolution(int width, int height) {
-        projection.setRatio((float) width / height);
     }
 
     @Override
     public void prepare() {
-        if (view != null) {
-            view.prepare();
+        if (camera != null) {
+            camera.prepareWithProgram(currentProgram);
         }
 
-        if (projection != null) {
-            projection.prepare();
+        if (geometry != null) {
+            geometry.prepareWithProgram(currentProgram);
         }
 
-        for (IPluggable geometry : geometries)
-            geometry.prepare();
+        if (light != null) {
+            light.prepareWithProgram(currentProgram);
+        }
+
+        if (transformer != null) {
+            transformer.prepareWithProgram(currentProgram);
+        }
+
+        if (viewPort != null) {
+            viewPort.prepareWithProgram(currentProgram);
+        }
     }
 
-    @Override
     public void render() {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glUseProgram(currentProgram);
 
-        if (view != null) {
-            view.render();
+        if (camera != null) {
+            camera.render(currentProgram);
         }
 
-        if (projection != null) {
-            projection.render();
+        if (light != null) {
+            light.render(currentProgram);
         }
 
-        for (IPluggable geometry : geometries)
-            geometry.render();
+        if (transformer != null) {
+            transformer.render(currentProgram);
+        }
+
+        if (viewPort != null) {
+            viewPort.render(currentProgram);
+        }
+
+        if (geometry != null) {
+            geometry.render(currentProgram);
+        }
     }
 
     public static class Program {

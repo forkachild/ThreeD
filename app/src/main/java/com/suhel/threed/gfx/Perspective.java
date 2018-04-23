@@ -20,7 +20,7 @@ public class Perspective extends Projection {
     }
 
     @Override
-    public void render() {
+    public void render(int program) {
         projectionMatrixHandle = GLES20.glGetUniformLocation(program,
                 ShaderSpecs.UNI_PROJECTION_MATRIX);
         GLES20.glUniformMatrix4fv(projectionMatrixHandle, 1, false, matrix, 0);

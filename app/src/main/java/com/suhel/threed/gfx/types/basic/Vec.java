@@ -4,4 +4,8 @@ public abstract class Vec {
 
     public float[] data;
 
+    public final float[] asArray() {
+        return data;
+    }
+
 }

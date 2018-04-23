@@ -13,7 +13,7 @@ public abstract class Camera implements ICamera {
 
     public Camera() {
         this.eye = new Vec3();
-        this.eye = new Vec3();
+        this.lookAt = new Vec3();
     }
 
     public Camera(@NonNull Vec3 eye, @NonNull Vec3 lookAt) {
