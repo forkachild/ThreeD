@@ -9,11 +9,10 @@ import android.util.SparseIntArray;
 import com.suhel.threed.gfx.objects.camera.Camera;
 import com.suhel.threed.gfx.objects.geometry.Geometry;
 import com.suhel.threed.gfx.objects.light.Light;
-import com.suhel.threed.gfx.objects.transformer.Transformer;
 import com.suhel.threed.gfx.objects.viewport.ViewPort;
 import com.suhel.threed.gfx.types.interfaces.IPrepareable;
 import com.suhel.threed.utils.ResourcesHelper;
-import com.suhel.threed.utils.ShaderHelper;
+import com.suhel.threed.utils.GLHelper;
 
 public class Engine implements IPrepareable {
 
@@ -125,7 +124,7 @@ public class Engine implements IPrepareable {
             GLES20.glShaderSource(vs,
                     ResourcesHelper.readFile(context, vertexShaderRes));
             GLES20.glCompileShader(vs);
-            ShaderHelper.checkGlError("VS");
+            GLHelper.checkGlError("VS");
             GLES20.glGetShaderiv(vs, GLES20.GL_COMPILE_STATUS, flag, 0);
             if (flag[0] != GLES20.GL_TRUE) {
                 Log.e("VS Compile", "Error: " + GLES20.glGetShaderInfoLog(vs));
@@ -137,7 +136,7 @@ public class Engine implements IPrepareable {
             GLES20.glShaderSource(fs,
                     ResourcesHelper.readFile(context, fragmentShaderRes));
             GLES20.glCompileShader(fs);
-            ShaderHelper.checkGlError("FS");
+            GLHelper.checkGlError("FS");
             GLES20.glGetShaderiv(fs, GLES20.GL_COMPILE_STATUS, flag, 0);
             if (flag[0] != GLES20.GL_TRUE) {
                 Log.e("FS Compile", "Error: " + GLES20.glGetShaderInfoLog(vs));
@@ -147,11 +146,11 @@ public class Engine implements IPrepareable {
 
             int p = GLES20.glCreateProgram();
             GLES20.glAttachShader(p, vs);
-            ShaderHelper.checkGlError("VS Attach");
+            GLHelper.checkGlError("VS Attach");
             GLES20.glAttachShader(p, fs);
-            ShaderHelper.checkGlError("FS Attach");
+            GLHelper.checkGlError("FS Attach");
             GLES20.glLinkProgram(p);
-            ShaderHelper.checkGlError("Link");
+            GLHelper.checkGlError("Link");
             GLES20.glGetProgramiv(p, GLES20.GL_LINK_STATUS, flag, 0);
             if (flag[0] != GLES20.GL_TRUE) {
                 Log.e("Link Program", "Error: " + GLES20.glGetProgramInfoLog(vs));

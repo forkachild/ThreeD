@@ -12,7 +12,7 @@ import com.suhel.threed.gfx.objects.geometry.Geometry;
 import com.suhel.threed.gfx.objects.light.Light;
 import com.suhel.threed.gfx.objects.light.PointLight;
 import com.suhel.threed.gfx.objects.viewport.Frustum;
-import com.suhel.threed.utils.ModelHelper;
+import com.suhel.threed.utils.FileReader;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -37,7 +37,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         frustum = new Frustum(-1, 1, 1, -1, 0.7f, 7.0f);
-        geometry = ModelHelper.fromFile(context, R.raw.goru);
+        geometry = FileReader.fromFile(context, R.raw.goru, FileReader.Type.DAT);
         light = new PointLight(0, -5, 4, Color.WHITE);
 
         engine.setCamera(new SimpleEye(0, 0, -6, 0, 0, 0));

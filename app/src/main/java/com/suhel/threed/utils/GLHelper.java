@@ -3,7 +3,7 @@ package com.suhel.threed.utils;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class ShaderHelper {
+public class GLHelper {
 
     public static void checkGlError(String TAG) {
         int error;
