@@ -11,7 +11,7 @@ public class SimpleEye extends Camera {
 
     protected Vec3 up;
 
-    private int viewMatrixHandle;
+    private int viewMatrixUniformHandle, eyePositionUniformHandle;
 
     public SimpleEye() {
         super();
@@ -57,6 +57,7 @@ public class SimpleEye extends Camera {
 
     @Override
     public void prepare() {
+        super.prepare();
         Matrix.setLookAtM(getMatrix().data, 0,
                 getEye().getX(), getEye().getY(), getEye().getZ(),
                 getLookAt().getX(), getLookAt().getY(), getLookAt().getZ(),
@@ -65,13 +66,17 @@ public class SimpleEye extends Camera {
 
     @Override
     public void prepareWithProgram(int program) {
-        viewMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
+        super.prepareWithProgram(program);
+        viewMatrixUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
+        eyePositionUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_EYE_POSITION);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniformMatrix4fv(viewMatrixHandle, 1,
+        super.prepareWithProgram(program);
+        GLES20.glUniformMatrix4fv(viewMatrixUniformHandle, 1,
                 false, getMatrix().data, 0);
+        GLES20.glUniform3fv(eyePositionUniformHandle, 1, getEye().asArray(), 0);
     }
 
 }

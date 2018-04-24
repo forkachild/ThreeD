@@ -8,11 +8,11 @@ import android.opengl.GLSurfaceView;
 import com.suhel.threed.R;
 import com.suhel.threed.gfx.Engine;
 import com.suhel.threed.gfx.objects.camera.SimpleEye;
+import com.suhel.threed.gfx.objects.geometry.Geometry;
+import com.suhel.threed.gfx.objects.light.Light;
 import com.suhel.threed.gfx.objects.light.PointLight;
-import com.suhel.threed.gfx.objects.transformer.BasicTransforms;
 import com.suhel.threed.gfx.objects.viewport.Frustum;
 import com.suhel.threed.utils.ModelHelper;
-import com.suhel.threed.utils.ShaderHelper;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -22,6 +22,8 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
     private Context context;
     private Engine engine;
     private Frustum frustum = new Frustum(-1, 1, 1, -1, 0.7f, 7.0f);
+    private Geometry geometry;
+    private Light light;
 
     public DefaultRenderer(Context context) {
         this.context = context;
@@ -34,11 +36,15 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+        frustum = new Frustum(-1, 1, 1, -1, 0.7f, 7.0f);
+        geometry = ModelHelper.fromFile(context, R.raw.goru);
+        light = new PointLight(0, -5, 4, Color.WHITE);
+
         engine.setCamera(new SimpleEye(0, 0, -6, 0, 0, 0));
         engine.setViewPort(frustum);
-        engine.setTransformer(new BasicTransforms(0,0,0,0,
-                0,0,0,0,0,0));
-        engine.setGeometry(ModelHelper.fromFile(context, R.raw.goru));
+        engine.setLight(light);
+        engine.setGeometry(geometry);
+        geometry.rotate(45, 1, 0, 0);
         engine.assignProgramToSlot(0, Engine.Program.fromRes(R.raw.sh_vertex, R.raw.sh_fragment));
         engine.prepare();
     }
@@ -53,6 +59,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        geometry.rotate(2.0f, 0.0f, 1.0f, 0.0f);
         engine.render();
     }
 

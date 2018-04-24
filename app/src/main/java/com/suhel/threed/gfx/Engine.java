@@ -22,7 +22,6 @@ public class Engine implements IPrepareable {
     private Camera camera;
     private Geometry geometry;
     private Light light;
-    private Transformer transformer;
     private ViewPort viewPort;
 
     private SparseIntArray shaderPrograms = new SparseIntArray();
@@ -42,10 +41,6 @@ public class Engine implements IPrepareable {
 
     public void setLight(Light light) {
         this.light = light;
-    }
-
-    public void setTransformer(Transformer transformer) {
-        this.transformer = transformer;
     }
 
     public void setViewPort(ViewPort viewPort) {
@@ -68,10 +63,6 @@ public class Engine implements IPrepareable {
     @Override
     public void prepare() {
 
-        if (transformer != null) {
-            transformer.prepareWithProgram(currentProgram);
-        }
-
         if (camera != null) {
             camera.prepareWithProgram(currentProgram);
         }
@@ -92,10 +83,6 @@ public class Engine implements IPrepareable {
     public void render() {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glUseProgram(currentProgram);
-
-        if (transformer != null) {
-            transformer.render(currentProgram);
-        }
 
         if (camera != null) {
             camera.render(currentProgram);

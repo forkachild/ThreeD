@@ -1,19 +1,23 @@
-//#extension GL_OES_standard_derivatives : enable
+#extension GL_OES_standard_derivatives : enable
 
-precision mediump float;
+precision highp float;
 
-//varying vec4 v_Position;
+uniform vec4 u_LightColor;
+uniform vec3 u_EyePosition;
+
+varying vec4 v_Position;
+varying vec4 v_LightPosition;
 
 void main() {
-//    vec3 lightPos = vec3(0.0, 6.0, -4.0);
-//    vec4 lightColor = vec4(1.0, 1.0, 0.8, 1.0);
-//    vec3 dX = dFdx(v_Position.xyz);
-//    vec3 dY = dFdy(v_Position.xyz);
-//    vec3 normal = normalize(cross(dY, dX));
-//
-//    vec3 lightVector = normalize(v_Position.xyz - lightPos);
-//    float lambert = dot(normal, lightVector);
-//
-//    gl_FragColor = lightColor * (1.8 + lambert);
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    vec3 dX = dFdx(v_Position.xyz);
+    vec3 dY = dFdy(v_Position.xyz);
+    vec3 normal = normalize(cross(dX, dY));
+
+    vec3 lightVector = normalize(v_Position.xyz - v_LightPosition.xyz);
+    float lambert = max(dot(normal, lightVector), 0.3);
+    float length = length(lightVector);
+    float attenuation = 1.0 / (1.0 + (length * length));
+    vec4 ambient = vec4(0.02, 0.02, 0.02, 1.0);
+
+    gl_FragColor = ambient + (u_LightColor * lambert * attenuation);
 }

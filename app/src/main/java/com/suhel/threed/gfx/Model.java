@@ -64,7 +64,7 @@ public class Model implements IPluggable, IShaded {
                 GLES20.GL_FLOAT, false, vertexStride * ShaderSpecs.FLOAT_SIZE,
                 vertexBuffer);
 
-        modelMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_MODEL_MATRIX);
+        modelMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_GEOMETRY_MODEL_MATRIX);
 //        ShaderHelper.checkGlError("Load Model Matrix");
         GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, modelMatrix, 0);
 

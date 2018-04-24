@@ -1,7 +1,10 @@
 package com.suhel.threed.gfx.objects.camera;
 
+import android.opengl.GLES20;
+import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
+import com.suhel.threed.gfx.types.ShaderSpecs;
 import com.suhel.threed.gfx.types.basic.Mat4;
 import com.suhel.threed.gfx.types.basic.Vec3;
 
@@ -10,6 +13,9 @@ public abstract class Camera implements ICamera {
     private Mat4 matrix = new Mat4();
     private Vec3 eye;
     private Vec3 lookAt;
+    private Mat4 modelMatrix = new Mat4();
+
+    private int modelMatrixUniformHandle;
 
     public Camera() {
         this.eye = new Vec3();
@@ -59,4 +65,32 @@ public abstract class Camera implements ICamera {
         return matrix;
     }
 
+    @Override
+    public void prepare() {
+        Matrix.setIdentityM(modelMatrix.data, 0);
+    }
+
+    @Override
+    public void prepareWithProgram(int program) {
+        modelMatrixUniformHandle = GLES20.glGetUniformLocation(program,
+                ShaderSpecs.UNI_CAMERA_MODEL_MATRIX);
+    }
+
+    @Override
+    public void render(int program) {
+        GLES20.glUniformMatrix4fv(modelMatrixUniformHandle, 1, false,
+                modelMatrix.data, 0);
+    }
+
+    public final void rotate(float angle, float x, float y, float z) {
+        Matrix.rotateM(modelMatrix.data, 0, angle, x, y, z);
+    }
+
+    public final void translate(float x, float y, float z) {
+        Matrix.translateM(modelMatrix.data, 0, x, y, z);
+    }
+
+    public final void scale(float x, float y, float z) {
+        Matrix.scaleM(modelMatrix.data, 0, x, y, z);
+    }
 }

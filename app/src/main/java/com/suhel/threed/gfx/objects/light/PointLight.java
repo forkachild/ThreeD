@@ -19,13 +19,15 @@ public class PointLight extends Light {
 
     @Override
     public void prepareWithProgram(int program) {
-        lightPosUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_POSITION0);
-        lightColorUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_COLOR0);
+        super.prepareWithProgram(program);
+        lightPosUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_POSITION);
+        lightColorUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_LIGHT_COLOR);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniform4fv(lightPosUniformHandle, 1, getPosition().asArray(), 0);
+        super.render(program);
+        GLES20.glUniform3fv(lightPosUniformHandle, 1, getPosition().asArray(), 0);
         GLES20.glUniform4fv(lightColorUniformHandle, 1, getColor().asArray(), 0);
     }
 

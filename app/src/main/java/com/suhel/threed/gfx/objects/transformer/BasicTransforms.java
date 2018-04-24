@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
 import com.suhel.threed.gfx.types.basic.Vec3;
-import com.suhel.threed.utils.ShaderHelper;
 
 public class BasicTransforms extends Transformer {
 
@@ -93,14 +92,14 @@ public class BasicTransforms extends Transformer {
     @Override
     public void prepare() {
         Matrix.setIdentityM(getMatrix().data, 0);
-        prepareTranslate();
-        prepareRotate();
-        prepareScale();
+//        prepareTranslate();
+//        prepareRotate();
+//        prepareScale();
     }
 
     @Override
     public void prepareWithProgram(int program) {
-        modelMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_MODEL_MATRIX);
+        modelMatrixHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_GEOMETRY_MODEL_MATRIX);
     }
 
     @Override
