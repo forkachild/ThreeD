@@ -56,7 +56,6 @@ public class Engine implements IPrepareable {
         program.compile(context);
         this.currentProgram = program.getProgram();
         shaderPrograms.put(slot, this.currentProgram);
-        prepare();
     }
 
     public void setCurrentSlot(int slot) {
@@ -68,24 +67,25 @@ public class Engine implements IPrepareable {
 
     @Override
     public void prepare() {
+
+        if (transformer != null) {
+            transformer.prepareWithProgram(currentProgram);
+        }
+
         if (camera != null) {
             camera.prepareWithProgram(currentProgram);
         }
 
-        if (geometry != null) {
-            geometry.prepareWithProgram(currentProgram);
+        if (viewPort != null) {
+            viewPort.prepareWithProgram(currentProgram);
         }
 
         if (light != null) {
             light.prepareWithProgram(currentProgram);
         }
 
-        if (transformer != null) {
-            transformer.prepareWithProgram(currentProgram);
-        }
-
-        if (viewPort != null) {
-            viewPort.prepareWithProgram(currentProgram);
+        if (geometry != null) {
+            geometry.prepareWithProgram(currentProgram);
         }
     }
 
@@ -93,20 +93,20 @@ public class Engine implements IPrepareable {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glUseProgram(currentProgram);
 
-        if (camera != null) {
-            camera.render(currentProgram);
-        }
-
-        if (light != null) {
-            light.render(currentProgram);
-        }
-
         if (transformer != null) {
             transformer.render(currentProgram);
         }
 
+        if (camera != null) {
+            camera.render(currentProgram);
+        }
+
         if (viewPort != null) {
             viewPort.render(currentProgram);
+        }
+
+        if (light != null) {
+            light.render(currentProgram);
         }
 
         if (geometry != null) {

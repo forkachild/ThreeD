@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 import android.support.annotation.NonNull;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
+import com.suhel.threed.utils.ShaderHelper;
 
 public class SimpleGeometry extends Geometry {
 
