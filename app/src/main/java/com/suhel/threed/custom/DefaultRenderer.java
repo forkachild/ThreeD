@@ -37,7 +37,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         frustum = new Frustum(-1, 1, 1, -1, 0.7f, 7.0f);
-        geometry = FileReader.fromFile(context, R.raw.goru, FileReader.Type.DAT);
+        geometry = FileReader.fromFile(context, R.raw.monkey, FileReader.Type.OBJ);
         light = new PointLight(0, -5, 4, Color.WHITE);
 
         engine.setCamera(new SimpleEye(0, 0, -6, 0, 0, 0));
