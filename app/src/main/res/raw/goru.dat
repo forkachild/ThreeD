@@ -1,5 +1,5 @@
 // Vertex, normal, indices count, vertex, normal, indices stride
-14, 60, 20, 4, 4, 3
+14, 60, 20, 3, 3, 3
 
 // Vertices
 0.0, 2.0, 1.0, 1.0

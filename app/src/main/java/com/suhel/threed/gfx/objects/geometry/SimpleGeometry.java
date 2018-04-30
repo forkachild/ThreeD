@@ -1,6 +1,6 @@
 package com.suhel.threed.gfx.objects.geometry;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.support.annotation.NonNull;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
@@ -17,22 +17,22 @@ public class SimpleGeometry extends Geometry {
     @Override
     public void prepareWithProgram(int program) {
         super.prepareWithProgram(program);
-        positionAttribHandle = GLES20.glGetAttribLocation(program, ShaderSpecs.ATTR_POSITION);
+        positionAttribHandle = GLES30.glGetAttribLocation(program, ShaderSpecs.IN_POSITION);
     }
 
     @Override
     public void render(int program) {
         super.render(program);
-        GLES20.glEnableVertexAttribArray(positionAttribHandle);
+        GLES30.glEnableVertexAttribArray(positionAttribHandle);
 
-        GLES20.glVertexAttribPointer(positionAttribHandle, getVertexStride(),
-                GLES20.GL_FLOAT, false, getVertexStride() * ShaderSpecs.FLOAT_SIZE,
+        GLES30.glVertexAttribPointer(positionAttribHandle, getVertexStride(),
+                GLES30.GL_FLOAT, false, getVertexStride() * ShaderSpecs.FLOAT_SIZE,
                 getVertexBuffer());
 
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, getIndexCount(), GLES20.GL_UNSIGNED_SHORT,
+        GLES30.glDrawElements(GLES30.GL_TRIANGLES, getIndexCount(), GLES30.GL_UNSIGNED_SHORT,
                 getIndexBuffer());
 
-        GLES20.glDisableVertexAttribArray(positionAttribHandle);
+        GLES30.glDisableVertexAttribArray(positionAttribHandle);
     }
 
 }

@@ -1,11 +1,12 @@
 package com.suhel.threed.gfx.objects.geometry;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
 import com.suhel.threed.gfx.types.basic.Mat4;
+import com.suhel.threed.utils.MatrixHelper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -74,13 +75,13 @@ public abstract class Geometry implements IGeometry {
 
     @Override
     public void prepareWithProgram(int program) {
-        modelMatrixUniformHandle = GLES20.glGetUniformLocation(program,
+        modelMatrixUniformHandle = GLES30.glGetUniformLocation(program,
                 ShaderSpecs.UNI_GEOMETRY_MODEL_MATRIX);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniformMatrix4fv(modelMatrixUniformHandle, 1, false,
+        GLES30.glUniformMatrix4fv(modelMatrixUniformHandle, 1, false,
                 modelMatrix.data, 0);
     }
 
@@ -88,12 +89,16 @@ public abstract class Geometry implements IGeometry {
         Matrix.rotateM(modelMatrix.data, 0, angle, x, y, z);
     }
 
+    public final void setRotation(float angle, float x, float y, float z) {
+        Matrix.setRotateM(modelMatrix.data, 0, angle, x, y, z);
+    }
+
     public final void translate(float x, float y, float z) {
         Matrix.translateM(modelMatrix.data, 0, x, y, z);
     }
 
     public final void scale(float x, float y, float z) {
-        Matrix.scaleM(modelMatrix.data, 0, x, y, z);
+        MatrixHelper.setScale(modelMatrix.data, x, y, z);
     }
 
 }

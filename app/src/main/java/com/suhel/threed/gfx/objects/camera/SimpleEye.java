@@ -1,6 +1,6 @@
 package com.suhel.threed.gfx.objects.camera;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
@@ -67,16 +67,16 @@ public class SimpleEye extends Camera {
     @Override
     public void prepareWithProgram(int program) {
         super.prepareWithProgram(program);
-        viewMatrixUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
-        eyePositionUniformHandle = GLES20.glGetUniformLocation(program, ShaderSpecs.UNI_EYE_POSITION);
+        viewMatrixUniformHandle = GLES30.glGetUniformLocation(program, ShaderSpecs.UNI_VIEW_MATRIX);
+        eyePositionUniformHandle = GLES30.glGetUniformLocation(program, ShaderSpecs.UNI_EYE_POSITION);
     }
 
     @Override
     public void render(int program) {
         super.prepareWithProgram(program);
-        GLES20.glUniformMatrix4fv(viewMatrixUniformHandle, 1,
+        GLES30.glUniformMatrix4fv(viewMatrixUniformHandle, 1,
                 false, getMatrix().data, 0);
-        GLES20.glUniform3fv(eyePositionUniformHandle, 1, getEye().asArray(), 0);
+        GLES30.glUniform3fv(eyePositionUniformHandle, 1, getEye().asArray(), 0);
     }
 
 }

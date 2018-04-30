@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.RawRes;
 import android.util.SparseArray;
 
+import com.suhel.threed.gfx.objects.geometry.ExtendedGeometry;
 import com.suhel.threed.gfx.objects.geometry.Geometry;
 import com.suhel.threed.gfx.objects.geometry.SimpleGeometry;
 
@@ -13,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileReader {
+public class ModelReader {
 
     private static final SparseArray<Geometry> resMap = new SparseArray<>();
 
@@ -136,7 +137,7 @@ public class FileReader {
             lines.add(line);
         }
 
-        vertices = new float[vertexCount * 4];      // vec4(x y z w)
+        vertices = new float[vertexCount * 3];      // vec4(x y z w)
         indices = new short[faceCount * 3];
 
         int v = 0, i = 0;
@@ -152,20 +153,92 @@ public class FileReader {
                     vertices[v++] = Float.parseFloat(parts[1]);
                     vertices[v++] = Float.parseFloat(parts[2]);
                     vertices[v++] = Float.parseFloat(parts[3]);
-                    vertices[v++] = 1.0f;
                     break;
 
                 case "f":
 
                     for (int j = 1; j < 4; j++) {
                         String[] subParts = parts[j].split("/");
-                        indices[i++] = Short.parseShort(subParts[0]);
+                        indices[i++] = (short) (Short.parseShort(subParts[0]) - 1);
                     }
                     break;
 
             }
         }
-        return new SimpleGeometry(vertices, 4, indices);
+        return new SimpleGeometry(vertices, 3, indices);
+    }
+
+    private static Geometry _fromOBJFileAlt(Context context, @RawRes int resource) throws IOException {
+
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(context.getResources().openRawResource(resource)));
+
+        String line, parts[], subParts[];
+        List<Float> vertices = new ArrayList<>();
+        List<Short> indices = new ArrayList<>();
+        List<Float> normalsRef = new ArrayList<>();
+        List<Float> normals = new ArrayList<>();
+
+        while ((line = br.readLine()) != null) {
+            line = line.trim();
+
+            if (line.isEmpty() || line.startsWith("#"))
+                continue;
+
+            parts = line.split("\\s+");
+
+            switch (parts[0]) {
+
+                case "v":
+
+                    vertices.add(Float.parseFloat(parts[1]));
+                    vertices.add(Float.parseFloat(parts[2]));
+                    vertices.add(Float.parseFloat(parts[3]));
+                    break;
+
+                case "vn":
+
+                    normalsRef.add(Float.parseFloat(parts[1]));
+                    normalsRef.add(Float.parseFloat(parts[2]));
+                    normalsRef.add(Float.parseFloat(parts[3]));
+                    break;
+
+                case "f":
+
+                    // Only triangulated faces allowed
+                    for (int i = 0; i < 3; i++) {
+                        subParts = parts[i + 1].split("/");
+
+                        short vertexIndex = Short.parseShort(subParts[0]);
+                        int normalIndex = Short.parseShort(subParts[2]) - 1;
+
+                        indices.add(--vertexIndex);
+                        normals.add(normalsRef.get(3 * normalIndex));
+                        normals.add(normalsRef.get(3 * normalIndex + 1));
+                        normals.add(normalsRef.get(3 * normalIndex + 1));
+                    }
+                    break;
+
+            }
+
+        }
+
+        br.close();
+
+        float[] arrVertices = new float[vertices.size()];
+        float[] arrNormals = new float[normals.size()];
+        short[] arrIndices = new short[indices.size()];
+
+        for (int i = 0; i < vertices.size(); i++)
+            arrVertices[i] = vertices.get(i);
+
+        for (int i = 0; i < normals.size(); i++)
+            arrNormals[i] = normals.get(i);
+
+        for (int i = 0; i < indices.size(); i++)
+            arrIndices[i] = indices.get(i);
+
+        return new ExtendedGeometry(arrVertices, 3, arrNormals, 3, arrIndices);
     }
 
     public enum Type {

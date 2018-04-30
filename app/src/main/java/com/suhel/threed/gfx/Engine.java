@@ -1,7 +1,8 @@
 package com.suhel.threed.gfx;
 
 import android.content.Context;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
+import android.opengl.GLES30;
 import android.support.annotation.RawRes;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -80,8 +81,8 @@ public class Engine implements IPrepareable {
     }
 
     public void render() {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        GLES20.glUseProgram(currentProgram);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+        GLES30.glUseProgram(currentProgram);
 
         if (camera != null) {
             camera.render(currentProgram);
@@ -120,41 +121,41 @@ public class Engine implements IPrepareable {
                 return;
 
             int[] flag = new int[1];
-            int vs = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
-            GLES20.glShaderSource(vs,
+            int vs = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER);
+            GLES30.glShaderSource(vs,
                     ResourcesHelper.readFile(context, vertexShaderRes));
-            GLES20.glCompileShader(vs);
+            GLES30.glCompileShader(vs);
             GLHelper.checkGlError("VS");
-            GLES20.glGetShaderiv(vs, GLES20.GL_COMPILE_STATUS, flag, 0);
-            if (flag[0] != GLES20.GL_TRUE) {
-                Log.e("VS Compile", "Error: " + GLES20.glGetShaderInfoLog(vs));
-                GLES20.glDeleteShader(vs);
+            GLES30.glGetShaderiv(vs, GLES30.GL_COMPILE_STATUS, flag, 0);
+            if (flag[0] != GLES30.GL_TRUE) {
+                Log.e("VS Compile", "Error: " + GLES30.glGetShaderInfoLog(vs));
+                GLES30.glDeleteShader(vs);
                 return;
             }
 
-            int fs = GLES20.glCreateShader(GLES20.GL_FRAGMENT_SHADER);
-            GLES20.glShaderSource(fs,
+            int fs = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER);
+            GLES30.glShaderSource(fs,
                     ResourcesHelper.readFile(context, fragmentShaderRes));
-            GLES20.glCompileShader(fs);
+            GLES30.glCompileShader(fs);
             GLHelper.checkGlError("FS");
-            GLES20.glGetShaderiv(fs, GLES20.GL_COMPILE_STATUS, flag, 0);
-            if (flag[0] != GLES20.GL_TRUE) {
-                Log.e("FS Compile", "Error: " + GLES20.glGetShaderInfoLog(vs));
-                GLES20.glDeleteShader(fs);
+            GLES30.glGetShaderiv(fs, GLES30.GL_COMPILE_STATUS, flag, 0);
+            if (flag[0] != GLES30.GL_TRUE) {
+                Log.e("FS Compile", "Error: " + GLES30.glGetShaderInfoLog(vs));
+                GLES30.glDeleteShader(fs);
                 return;
             }
 
-            int p = GLES20.glCreateProgram();
-            GLES20.glAttachShader(p, vs);
+            int p = GLES30.glCreateProgram();
+            GLES30.glAttachShader(p, vs);
             GLHelper.checkGlError("VS Attach");
-            GLES20.glAttachShader(p, fs);
+            GLES30.glAttachShader(p, fs);
             GLHelper.checkGlError("FS Attach");
-            GLES20.glLinkProgram(p);
+            GLES30.glLinkProgram(p);
             GLHelper.checkGlError("Link");
-            GLES20.glGetProgramiv(p, GLES20.GL_LINK_STATUS, flag, 0);
-            if (flag[0] != GLES20.GL_TRUE) {
-                Log.e("Link Program", "Error: " + GLES20.glGetProgramInfoLog(vs));
-                GLES20.glDeleteProgram(p);
+            GLES30.glGetProgramiv(p, GLES30.GL_LINK_STATUS, flag, 0);
+            if (flag[0] != GLES30.GL_TRUE) {
+                Log.e("Link Program", "Error: " + GLES30.glGetProgramInfoLog(vs));
+                GLES30.glDeleteProgram(p);
                 return;
             }
 

@@ -1,6 +1,6 @@
 package com.suhel.threed.gfx.objects.viewport;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
@@ -83,13 +83,13 @@ public class Orthogonal extends ViewPort {
 
     @Override
     public void prepareWithProgram(int program) {
-        projectionMatrixHandle = GLES20.glGetUniformLocation(program,
+        projectionMatrixHandle = GLES30.glGetUniformLocation(program,
                 ShaderSpecs.UNI_PROJECTION_MATRIX);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniformMatrix4fv(projectionMatrixHandle, 1,
+        GLES30.glUniformMatrix4fv(projectionMatrixHandle, 1,
                 false, getMatrix().data, 0);
     }
 

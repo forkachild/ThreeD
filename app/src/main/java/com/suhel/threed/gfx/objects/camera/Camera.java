@@ -1,6 +1,6 @@
 package com.suhel.threed.gfx.objects.camera;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.support.annotation.NonNull;
 
@@ -72,18 +72,22 @@ public abstract class Camera implements ICamera {
 
     @Override
     public void prepareWithProgram(int program) {
-        modelMatrixUniformHandle = GLES20.glGetUniformLocation(program,
+        modelMatrixUniformHandle = GLES30.glGetUniformLocation(program,
                 ShaderSpecs.UNI_CAMERA_MODEL_MATRIX);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniformMatrix4fv(modelMatrixUniformHandle, 1, false,
+        GLES30.glUniformMatrix4fv(modelMatrixUniformHandle, 1, false,
                 modelMatrix.data, 0);
     }
 
     public final void rotate(float angle, float x, float y, float z) {
         Matrix.rotateM(modelMatrix.data, 0, angle, x, y, z);
+    }
+
+    public final void setRotation(float angle, float x, float y, float z) {
+        Matrix.setRotateM(modelMatrix.data, 0, angle, x, y, z);
     }
 
     public final void translate(float x, float y, float z) {

@@ -1,6 +1,6 @@
 package com.suhel.threed.gfx.objects.light;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.support.annotation.ColorInt;
 
@@ -74,13 +74,13 @@ public abstract class Light implements ILight {
 
     @Override
     public void prepareWithProgram(int program) {
-        modelMatrixUniformHandle = GLES20.glGetUniformLocation(program,
+        modelMatrixUniformHandle = GLES30.glGetUniformLocation(program,
                 ShaderSpecs.UNI_LIGHT_MODEL_MATRIX);
     }
 
     @Override
     public void render(int program) {
-        GLES20.glUniformMatrix4fv(modelMatrixUniformHandle, 1,
+        GLES30.glUniformMatrix4fv(modelMatrixUniformHandle, 1,
                 false, modelMatrix.asArray(), 0);
     }
 
