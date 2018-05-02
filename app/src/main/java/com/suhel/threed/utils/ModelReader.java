@@ -107,8 +107,8 @@ public class ModelReader {
                 new InputStreamReader(context.getResources().openRawResource(resource)));
 
         String line;
-        int vertexCount = 0, faceCount = 0;
-        float[] vertices;
+        int vertexCount = 0, normalCount = 0, faceCount = 0;
+        float[] vertices, normalRefs, normals;
         short[] indices;
 
         List<String> lines = new ArrayList<>();
@@ -128,6 +128,11 @@ public class ModelReader {
                     vertexCount++;
                     break;
 
+                case "vn":
+
+                    normalCount++;
+                    break;
+
                 case "f":
 
                     faceCount++;
@@ -137,10 +142,12 @@ public class ModelReader {
             lines.add(line);
         }
 
-        vertices = new float[vertexCount * 3];      // vec4(x y z w)
+        vertices = new float[vertexCount * 3];      // vec4(x y z)
+        normalRefs = new float[normalCount * 3];
+        normals = new float[faceCount * 3 * 3];     // 3 normals per face, each with vec4(x y z)
         indices = new short[faceCount * 3];
 
-        int v = 0, i = 0;
+        int v = 0, nr = 0, n = 0, i = 0;
 
         for (String s : lines) {
 
@@ -155,17 +162,28 @@ public class ModelReader {
                     vertices[v++] = Float.parseFloat(parts[3]);
                     break;
 
+                case "vn":
+
+                    normalRefs[nr++] = Float.parseFloat(parts[1]);
+                    normalRefs[nr++] = Float.parseFloat(parts[2]);
+                    normalRefs[nr++] = Float.parseFloat(parts[3]);
+                    break;
+
                 case "f":
 
                     for (int j = 1; j < 4; j++) {
                         String[] subParts = parts[j].split("/");
                         indices[i++] = (short) (Short.parseShort(subParts[0]) - 1);
+                        int normalIndex = Integer.parseInt(subParts[2]);
+                        normals[n++] = normalRefs[3 * (normalIndex - 1)];
+                        normals[n++] = normalRefs[(3 * (normalIndex - 1)) + 1];
+                        normals[n++] = normalRefs[(3 * (normalIndex - 1)) + 2];
                     }
                     break;
 
             }
         }
-        return new SimpleGeometry(vertices, 3, indices);
+        return new ExtendedGeometry(vertices, 3, normals, 3, indices);
     }
 
     private static Geometry _fromOBJFileAlt(Context context, @RawRes int resource) throws IOException {

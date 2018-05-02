@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import com.suhel.threed.gfx.types.ShaderSpecs;
 import com.suhel.threed.gfx.types.basic.Mat4;
-import com.suhel.threed.utils.MatrixHelper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -98,7 +97,7 @@ public abstract class Geometry implements IGeometry {
     }
 
     public final void scale(float x, float y, float z) {
-        MatrixHelper.setScale(modelMatrix.data, x, y, z);
+        Matrix.scaleM(modelMatrix.data, 0, x, y, z);
     }
 
 }

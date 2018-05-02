@@ -47,12 +47,14 @@ public class ExtendedGeometry extends Geometry {
 
     @Override
     public void prepareWithProgram(int program) {
+        super.prepareWithProgram(program);
         positionAttribHandle = GLES30.glGetAttribLocation(program, ShaderSpecs.IN_POSITION);
         normalAttribHandle = GLES30.glGetAttribLocation(program, ShaderSpecs.IN_NORMAL);
     }
 
     @Override
     public void render(int program) {
+        super.render(program);
         GLES30.glEnableVertexAttribArray(positionAttribHandle);
         GLES30.glEnableVertexAttribArray(normalAttribHandle);
 

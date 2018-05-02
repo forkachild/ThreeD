@@ -33,7 +33,9 @@ public class GameScreen extends GLSurfaceView implements GestureDetector.OnGestu
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event) || scaleGestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        scaleGestureDetector.onTouchEvent(event);
+        return true;
     }
 
     @Override
@@ -54,8 +56,8 @@ public class GameScreen extends GLSurfaceView implements GestureDetector.OnGestu
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        engine.rotate(distanceX / 10.0f, 0, -1, 0);
-        engine.rotate(distanceY / 10.0f, -1, 0, 0);
+        engine.rotate(distanceX / 5.0f, 0, -1, 0);
+        engine.rotate(distanceY / 5.0f, -1, 0, 0);
         return true;
     }
 
@@ -71,10 +73,9 @@ public class GameScreen extends GLSurfaceView implements GestureDetector.OnGestu
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-        scale *= (detector.getScaleFactor());
-        scale = Math.max(1.0f, Math.min(scale, 2.5f));
-        engine.setScale(scale, scale, scale);
-        Log.e("Scale", String.format(Locale.getDefault(), "%f", scale));
+//        scale *= (detector.getScaleFactor());
+//        scale = Math.max(1.0f, Math.min(scale, 2.5f));
+        engine.setScale(detector.getScaleFactor(), detector.getScaleFactor(), detector.getScaleFactor());
         return true;
     }
 

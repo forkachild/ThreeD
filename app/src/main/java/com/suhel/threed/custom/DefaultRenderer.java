@@ -38,7 +38,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_DEPTH_TEST);
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        frustum = new Frustum(-1, 1, 1, -1, 0.7f, 7.0f);
+        frustum = new Frustum(-1, 1, 1, -1, 0.3f, 15.0f);
         camera = new SimpleEye(0, 0, -6, 0, 0, 0);
         geometry = ModelReader.fromFile(context, R.raw.monkey, ModelReader.Type.OBJ);
         light = new PointLight(0, -5, 4, Color.WHITE);
@@ -47,8 +47,7 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
         engine.setViewPort(frustum);
         engine.setLight(light);
         engine.setGeometry(geometry);
-//        geometry.rotate(45, 1, 0, 0);
-//        geometry.scale(2.0f, 2.0f, 2.0f);
+        geometry.scale(2.0f, 2.0f, 2.0f);
 
         engine.assignProgramToSlot(0, Engine.Program.fromRes(R.raw.sh_vertex, R.raw.sh_fragment));
         engine.prepare();
@@ -64,7 +63,6 @@ public class DefaultRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-//        geometry.rotate(2.0f, 0.0f, 1.0f, 0.0f);
         engine.render();
     }
 

@@ -7,6 +7,7 @@ uniform vec4 LightColor;
 
 smooth in vec4 VaryingVertexPosition;
 smooth in vec4 VaryingLightPosition;
+smooth in vec4 VaryingVertexNormal;
 
 out vec4 OutColor;
 
